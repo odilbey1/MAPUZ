@@ -1,6 +1,15 @@
 import { Business, BusinessFormData, BusinessLink } from './types';
 import { supabase } from './supabase';
 
+const LINKS_MARKER = '__MAPUZ_LINKS__:';
+
+// Helper: Encode links array into description string as bulletproof fallback
+function encodeLinksIntoDescription(desc: string, links: BusinessLink[]): string {
+  const cleanDesc = desc ? desc.split(LINKS_MARKER)[0].trim() : '';
+  if (!links || links.length === 0) return cleanDesc;
+  return cleanDesc ? `${cleanDesc}\n\n${LINKS_MARKER}${JSON.stringify(links)}` : `${LINKS_MARKER}${JSON.stringify(links)}`;
+}
+
 // Helper: Upload logo to Supabase Storage if it's base64 data
 async function processLogoUrl(logoData: string): Promise<string> {
   if (!logoData || !logoData.startsWith('data:image')) {
@@ -38,14 +47,30 @@ async function processLogoUrl(logoData: string): Promise<string> {
   return logoData;
 }
 
-// Helper: Normalize business row from Supabase to ensure links array is always populated
+// Helper: Normalize business row from Supabase
 function normalizeBusiness(row: any): Business {
   let links: BusinessLink[] = [];
+  let description = row.description || '';
 
+  // 1. Check native 'links' JSONB column
   if (row.links && Array.isArray(row.links) && row.links.length > 0) {
     links = row.links;
-  } else {
-    // Reconstruct links array from legacy single fields if links array is empty
+  } else if (description.includes(LINKS_MARKER)) {
+    // 2. Extract embedded links from description fallback
+    try {
+      const parts = description.split(LINKS_MARKER);
+      description = parts[0].trim();
+      const parsed = JSON.parse(parts[1]);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        links = parsed;
+      }
+    } catch (e) {
+      console.error('Failed to parse embedded links:', e);
+    }
+  }
+
+  // 3. Fallback to legacy single fields if still no links found
+  if (links.length === 0) {
     if (row.telegram) {
       links.push({
         id: 'tg_legacy',
@@ -84,11 +109,16 @@ function normalizeBusiness(row: any): Business {
     }
   }
 
+  // Clean description string from marker if present
+  if (description.includes(LINKS_MARKER)) {
+    description = description.split(LINKS_MARKER)[0].trim();
+  }
+
   return {
     id: row.id,
     business_name: row.business_name,
     slug: row.slug,
-    description: row.description || '',
+    description: description,
     logo: row.logo || '',
     telegram: row.telegram || (links.find((l) => l.type === 'telegram')?.url || ''),
     instagram: row.instagram || (links.find((l) => l.type === 'instagram')?.url || ''),
@@ -154,7 +184,7 @@ export const businessStore = {
     const payload: Record<string, any> = {
       business_name: formData.business_name,
       slug: formData.slug,
-      description: formData.description,
+      description: formData.description || '',
       logo: processedLogo,
       telegram: firstTg,
       instagram: firstIg,
@@ -169,10 +199,12 @@ export const businessStore = {
       .select()
       .single();
 
-    // Fallback if links column doesn't exist yet on PostgreSQL table
+    // Bulletproof fallback: If 'links' column is missing in Supabase schema, embed links into description
     if (error && (error.message?.includes('links') || error.code === 'PGRST204')) {
-      console.warn("Column 'links' missing in Supabase PostgreSQL table, retrying insert without links column...");
+      console.warn("Column 'links' missing in Supabase PostgreSQL table. Using bulletproof description fallback...");
       delete payload.links;
+      payload.description = encodeLinksIntoDescription(formData.description || '', linksList);
+
       const retry = await supabase
         .from('businesses')
         .insert([payload])
@@ -196,8 +228,9 @@ export const businessStore = {
       updatedPayload.logo = await processLogoUrl(updatedPayload.logo);
     }
 
-    if (updatedPayload.links && Array.isArray(updatedPayload.links)) {
-      const linksList: BusinessLink[] = updatedPayload.links;
+    const linksList: BusinessLink[] = updatedPayload.links && Array.isArray(updatedPayload.links) ? updatedPayload.links : [];
+
+    if (linksList.length > 0) {
       updatedPayload.telegram = linksList.find((l) => l.type === 'telegram')?.url || formData.telegram || '';
       updatedPayload.instagram = linksList.find((l) => l.type === 'instagram')?.url || formData.instagram || '';
       updatedPayload.phone = linksList.find((l) => l.type === 'phone')?.url || formData.phone || '';
@@ -211,10 +244,14 @@ export const businessStore = {
       .select()
       .single();
 
-    // Fallback if links column doesn't exist yet on PostgreSQL table
+    // Bulletproof fallback: If 'links' column is missing in Supabase schema, embed links into description
     if (error && (error.message?.includes('links') || error.code === 'PGRST204')) {
-      console.warn("Column 'links' missing in Supabase PostgreSQL table, retrying update without links column...");
+      console.warn("Column 'links' missing in Supabase PostgreSQL table. Using bulletproof description fallback...");
       delete updatedPayload.links;
+      if (linksList.length > 0 || formData.description !== undefined) {
+        updatedPayload.description = encodeLinksIntoDescription(formData.description || '', linksList);
+      }
+
       const retry = await supabase
         .from('businesses')
         .update(updatedPayload)
