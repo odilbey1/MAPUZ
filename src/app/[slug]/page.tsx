@@ -54,7 +54,7 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
         title: 'Telegram',
         type: 'telegram',
         url: business.telegram,
-        subtitle: 'Rasmiy kanalimizga o\'tish',
+        subtitle: 'Telegram orqali bog\'lanish',
       });
     }
 

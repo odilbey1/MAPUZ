@@ -22,7 +22,7 @@ const DEFAULT_INITIAL_LINKS: BusinessLink[] = [
     title: 'Telegram',
     type: 'telegram',
     url: 'https://t.me/biznesingiz',
-    subtitle: 'Rasmiy kanalimizga o\'tish',
+    subtitle: 'Telegram orqali bog\'lanish',
   },
   {
     id: 'btn_ig_1',

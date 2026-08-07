@@ -56,13 +56,13 @@ export default function DynamicLinksManager({
     const existingCount = links.filter((l) => l.type === type).length;
 
     let defaultTitle = 'Telegram';
-    let defaultSubtitle = 'Rasmiy kanalimizga o\'tish';
+    let defaultSubtitle = 'Telegram orqali bog\'lanish';
     let defaultUrl = 'https://t.me/';
 
     switch (type) {
       case 'telegram':
         defaultTitle = existingCount === 0 ? 'Telegram' : `Telegram ${existingCount + 1}`;
-        defaultSubtitle = 'Rasmiy kanalimizga o\'tish';
+        defaultSubtitle = 'Telegram orqali bog\'lanish';
         defaultUrl = 'https://t.me/';
         break;
       case 'instagram':
@@ -342,7 +342,7 @@ export default function DynamicLinksManager({
                       type="text"
                       value={btn.subtitle || ''}
                       onChange={(e) => handleUpdate(btn.id, 'subtitle', e.target.value)}
-                      placeholder="Masalan: Rasmiy kanalimizga o'tish"
+                      placeholder="Masalan: Telegram orqali bog'lanish"
                       className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs outline-none"
                     />
                   </div>

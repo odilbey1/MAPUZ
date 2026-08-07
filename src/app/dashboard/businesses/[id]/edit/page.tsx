@@ -57,7 +57,7 @@ export default function EditBusinessPage({ params }: EditPageProps) {
               title: 'Telegram',
               type: 'telegram',
               url: data.telegram,
-              subtitle: 'Rasmiy kanalimizga o\'tish',
+              subtitle: 'Telegram orqali bog\'lanish',
             });
           }
           if (data.instagram) {

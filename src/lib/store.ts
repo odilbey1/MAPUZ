@@ -77,7 +77,7 @@ function normalizeBusiness(row: any): Business {
         title: 'Telegram',
         type: 'telegram',
         url: row.telegram,
-        subtitle: 'Rasmiy kanalimizga o\'tish',
+        subtitle: 'Telegram orqali bog\'lanish',
       });
     }
     if (row.instagram) {
