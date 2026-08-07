@@ -1,10 +1,8 @@
-'use client';
-
-import React, { useEffect, useState, use } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { businessStore } from '@/lib/store';
-import { Business, BusinessLink } from '@/lib/types';
-import { Send, Phone, MapPin, Sparkles, ExternalLink, Globe } from 'lucide-react';
+import { BusinessLink } from '@/lib/types';
+import { Phone, MapPin, Sparkles, ExternalLink, Globe } from 'lucide-react';
 import {
   InstagramIcon,
   TelegramIcon,
@@ -17,29 +15,11 @@ interface PublicPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default function PublicBusinessPage({ params }: PublicPageProps) {
-  const resolvedParams = use(params);
-  const [business, setBusiness] = useState<Business | null>(null);
-  const [loading, setLoading] = useState(true);
+export const revalidate = 0; // Ensure fresh profiles on every request
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      const data = await businessStore.getBySlug(resolvedParams.slug);
-      setBusiness(data);
-      setLoading(false);
-    }
-    load();
-  }, [resolvedParams.slug]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center p-4">
-        <div className="w-12 h-12 border-4 border-[#B7FF00] border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="text-sm text-[#A1A1AA] font-mono">MAPUZ profile loading...</p>
-      </div>
-    );
-  }
+export default async function PublicBusinessPage({ params }: PublicPageProps) {
+  const resolvedParams = await params;
+  const business = await businessStore.getBySlug(resolvedParams.slug);
 
   if (!business) {
     return (
@@ -253,7 +233,7 @@ export default function PublicBusinessPage({ params }: PublicPageProps) {
       <footer className="py-6 z-10">
         <Link
           href="/"
-          className="text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-white transition-colors flex items-center gap-1.5 font-mono"
+          className="text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#B7FF00] transition-colors flex items-center gap-1.5 font-mono"
         >
           <span>Powered by</span>
           <strong className="text-white bg-[#151515] px-2 py-0.5 rounded-[8px] border border-white/10">
