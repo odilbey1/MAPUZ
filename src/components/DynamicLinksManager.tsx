@@ -1,16 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BusinessLink, LinkType } from '@/lib/types';
 import {
   Plus,
   Trash2,
   MoveUp,
   MoveDown,
-  Send,
+  Globe,
   Phone,
   MapPin,
-  Globe
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
+  Link as LinkIcon
 } from 'lucide-react';
 import {
   InstagramIcon,
@@ -25,22 +28,29 @@ interface DynamicLinksManagerProps {
   onChange: (links: BusinessLink[]) => void;
 }
 
-const LINK_TYPE_OPTIONS: { type: LinkType; label: string }[] = [
-  { type: 'telegram', label: 'Telegram' },
-  { type: 'instagram', label: 'Instagram' },
-  { type: 'phone', label: 'Telefon' },
-  { type: 'google_maps', label: 'Joylashuv (Google Maps)' },
-  { type: 'website', label: 'Vebsayt' },
-  { type: 'youtube', label: 'YouTube' },
-  { type: 'tiktok', label: 'TikTok' },
-  { type: 'facebook', label: 'Facebook' },
-  { type: 'custom', label: 'Boshqa Havola' },
+const LINK_TYPE_OPTIONS: { type: LinkType; label: string; icon: React.ReactNode; color: string }[] = [
+  { type: 'telegram', label: 'Telegram', icon: <TelegramIcon className="w-4 h-4 text-[#0088cc]" />, color: '#0088cc' },
+  { type: 'instagram', label: 'Instagram', icon: <InstagramIcon className="w-4 h-4 text-[#E1306C]" />, color: '#E1306C' },
+  { type: 'phone', label: 'Telefon', icon: <Phone className="w-4 h-4 text-[#B7FF00]" />, color: '#B7FF00' },
+  { type: 'google_maps', label: 'Joylashuv (Maps)', icon: <MapPin className="w-4 h-4 text-[#EA4335]" />, color: '#EA4335' },
+  { type: 'website', label: 'Vebsayt', icon: <Globe className="w-4 h-4 text-emerald-400" />, color: '#10b981' },
+  { type: 'youtube', label: 'YouTube', icon: <YoutubeIcon className="w-4 h-4 text-red-500" />, color: '#ef4444' },
+  { type: 'tiktok', label: 'TikTok', icon: <TiktokIcon className="w-4 h-4 text-cyan-400" />, color: '#06b6d4' },
+  { type: 'facebook', label: 'Facebook', icon: <FacebookIcon className="w-4 h-4 text-blue-500" />, color: '#3b82f6' },
+  { type: 'custom', label: 'Boshqa', icon: <LinkIcon className="w-4 h-4 text-purple-400" />, color: '#a855f7' },
 ];
 
 export default function DynamicLinksManager({
   links = [],
   onChange,
 }: DynamicLinksManagerProps) {
+  // Track expanded extra options per item ID
+  const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
+
+  const toggleExpand = (id: string) => {
+    setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   // Add a new link of specified type
   const handleAddButton = (type: LinkType) => {
     const existingCount = links.filter((l) => l.type === type).length;
@@ -68,11 +78,11 @@ export default function DynamicLinksManager({
       case 'google_maps':
         defaultTitle = existingCount === 0 ? 'Joylashuv' : `Joylashuv ${existingCount + 1}`;
         defaultSubtitle = 'Google Maps xaritasidan ochish';
-        defaultUrl = 'https://maps.google.com/?q=';
+        defaultUrl = 'https://maps.google.com/';
         break;
       case 'youtube':
         defaultTitle = existingCount === 0 ? 'YouTube' : `YouTube ${existingCount + 1}`;
-        defaultSubtitle = 'Kanlimizga a\'zo bo\'ling';
+        defaultSubtitle = 'Kanalimizga a\'zo bo\'ling';
         defaultUrl = 'https://youtube.com/';
         break;
       case 'tiktok':
@@ -115,6 +125,45 @@ export default function DynamicLinksManager({
     );
   };
 
+  // Smart URL formatter on blur or change
+  const handleSmartUrlBlur = (id: string, type: LinkType, rawValue: string) => {
+    let val = rawValue.trim();
+    if (!val) return;
+
+    if (type === 'telegram') {
+      if (val.startsWith('@')) {
+        val = `https://t.me/${val.replace('@', '')}`;
+      } else if (!val.startsWith('http') && !val.startsWith('t.me/')) {
+        val = `https://t.me/${val}`;
+      } else if (val.startsWith('t.me/')) {
+        val = `https://${val}`;
+      }
+    } else if (type === 'instagram') {
+      if (val.startsWith('@')) {
+        val = `https://instagram.com/${val.replace('@', '')}`;
+      } else if (!val.startsWith('http') && !val.startsWith('instagram.com/')) {
+        val = `https://instagram.com/${val}`;
+      } else if (val.startsWith('instagram.com/')) {
+        val = `https://${val}`;
+      }
+    } else if (type === 'phone') {
+      if (!val.startsWith('+') && !val.startsWith('tel:')) {
+        const cleaned = val.replace(/\D/g, '');
+        if (cleaned.length === 9) {
+          val = `+998${cleaned}`;
+        } else if (cleaned.length === 12) {
+          val = `+${cleaned}`;
+        }
+      }
+    } else if (type === 'website' || type === 'youtube' || type === 'tiktok' || type === 'facebook') {
+      if (!val.startsWith('http://') && !val.startsWith('https://')) {
+        val = `https://${val}`;
+      }
+    }
+
+    handleUpdate(id, 'url', val);
+  };
+
   const handleMove = (index: number, direction: 'up' | 'down') => {
     const newLinks = [...links];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
@@ -126,216 +175,181 @@ export default function DynamicLinksManager({
     onChange(newLinks);
   };
 
-  const renderTypeIcon = (type: LinkType) => {
-    switch (type) {
-      case 'telegram':
-        return <TelegramIcon className="w-4 h-4 text-[#0088cc]" />;
-      case 'instagram':
-        return <InstagramIcon className="w-4 h-4 text-[#E1306C]" />;
-      case 'phone':
-        return <Phone className="w-4 h-4 text-[#B7FF00]" />;
-      case 'google_maps':
-        return <MapPin className="w-4 h-4 text-[#EA4335]" />;
-      case 'youtube':
-        return <YoutubeIcon className="w-4 h-4 text-red-500" />;
-      case 'tiktok':
-        return <TiktokIcon className="w-4 h-4 text-cyan-400" />;
-      case 'facebook':
-        return <FacebookIcon className="w-4 h-4 text-blue-500" />;
-      default:
-        return <Globe className="w-4 h-4 text-emerald-400" />;
-    }
+  const getLinkMeta = (type: LinkType) => {
+    return LINK_TYPE_OPTIONS.find((o) => o.type === type) || LINK_TYPE_OPTIONS[0];
   };
 
   return (
     <div className="pt-6 border-t border-white/10 space-y-6">
-      <div>
-        <h3 className="text-sm font-extrabold text-white uppercase tracking-wider text-[#A1A1AA]">
-          TUGMALAR & HAVOLALAR BOSHQARUVI (CHEKSIZ QO'SHISH & KAMAYTIRISH)
-        </h3>
-        <p className="text-xs text-[#A1A1AA] mt-1">
-          Profilingizda aks etadigan barcha tugmalarni qo'shing, o'chiring yoki tartiblang.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-extrabold text-white uppercase tracking-wider text-[#A1A1AA] flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#B7FF00]" />
+            <span>PROFIL TUGMALARI & HAVOLALAR</span>
+          </h3>
+          <p className="text-xs text-[#A1A1AA] mt-0.5">
+            Bitta bosing va kerakli ijtimoiy tarmoq tugmasini ko'paytiring yoki kamaytiring.
+          </p>
+        </div>
+        {links.length > 0 && (
+          <span className="text-xs font-mono font-bold bg-[#0A0A0A] border border-white/10 px-3 py-1.5 rounded-full text-[#B7FF00]">
+            {links.length} ta tugma
+          </span>
+        )}
       </div>
 
-      {/* Quick Add Buttons Bar */}
-      <div className="p-4 rounded-[20px] bg-[#0A0A0A] border border-white/10 space-y-3">
-        <span className="block text-xs font-bold text-white uppercase tracking-wider">
-          Yangi Tugma Qo'shish:
+      {/* Preset Quick Buttons Grid */}
+      <div className="p-4 rounded-[22px] bg-[#0A0A0A] border border-white/10 space-y-3">
+        <span className="block text-[11px] font-extrabold text-[#A1A1AA] uppercase tracking-wider">
+          + Yangi Tugma Qo'shish:
         </span>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => handleAddButton('telegram')}
-            className="flex items-center gap-1.5 bg-[#0088cc]/10 hover:bg-[#0088cc]/20 border border-[#0088cc]/30 text-[#0088cc] px-3 py-1.5 rounded-[12px] text-xs font-bold transition-all active:scale-95"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[3]" />
-            <span>+ Telegram</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleAddButton('instagram')}
-            className="flex items-center gap-1.5 bg-[#E1306C]/10 hover:bg-[#E1306C]/20 border border-[#E1306C]/30 text-[#E1306C] px-3 py-1.5 rounded-[12px] text-xs font-bold transition-all active:scale-95"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[3]" />
-            <span>+ Instagram</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleAddButton('phone')}
-            className="flex items-center gap-1.5 bg-[#B7FF00]/10 hover:bg-[#B7FF00]/20 border border-[#B7FF00]/30 text-[#B7FF00] px-3 py-1.5 rounded-[12px] text-xs font-bold transition-all active:scale-95"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[3]" />
-            <span>+ Telefon</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleAddButton('google_maps')}
-            className="flex items-center gap-1.5 bg-[#EA4335]/10 hover:bg-[#EA4335]/20 border border-[#EA4335]/30 text-[#EA4335] px-3 py-1.5 rounded-[12px] text-xs font-bold transition-all active:scale-95"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[3]" />
-            <span>+ Joylashuv (Maps)</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleAddButton('website')}
-            className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 px-3 py-1.5 rounded-[12px] text-xs font-bold transition-all active:scale-95"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[3]" />
-            <span>+ Vebsayt / Boshqa</span>
-          </button>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {LINK_TYPE_OPTIONS.map((opt) => (
+            <button
+              key={opt.type}
+              type="button"
+              onClick={() => handleAddButton(opt.type)}
+              className="flex items-center gap-2 bg-[#151515] hover:bg-white/10 border border-white/10 hover:border-white/20 p-2.5 rounded-[14px] text-xs font-bold text-white transition-all duration-200 active:scale-95 text-left group"
+            >
+              <div className="p-1 rounded-[8px] bg-[#0A0A0A] border border-white/5 shrink-0 group-hover:scale-110 transition-transform">
+                {opt.icon}
+              </div>
+              <span className="truncate">+ {opt.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* List of Active Buttons */}
+      {/* List of Link Cards */}
       {links.length === 0 ? (
-        <div className="p-8 rounded-[22px] bg-[#0A0A0A] border border-white/10 text-center space-y-2">
-          <p className="text-sm font-bold text-white">Hozircha hech qanday tugma qo'shilmagan</p>
+        <div className="p-8 rounded-[22px] bg-[#0A0A0A] border border-dashed border-white/15 text-center space-y-2">
+          <p className="text-sm font-bold text-white">Hozircha tugma qo'shilmadi</p>
           <p className="text-xs text-[#A1A1AA]">
-            Yuqoridagi "+ Telegram", "+ Instagram", "+ Telefon" kabi tugmalarni bosib, profilingiz uchun tugmalar qo'shing.
+            Yuqoridagi "+ Telegram", "+ Instagram", "+ Telefon" kabi tugmalardan birini bosing.
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-[#A1A1AA]">
-            <span>Jami tugmalar soni: <strong className="text-white">{links.length}</strong> ta</span>
-            <span>Tartibni o'zgartirish uchun ⬆ ⬇ tugmalardan foydalaning</span>
-          </div>
+        <div className="space-y-3">
+          {links.map((btn, index) => {
+            const meta = getLinkMeta(btn.type);
+            const isExpanded = expandedIds[btn.id] || false;
 
-          {links.map((btn, index) => (
-            <div
-              key={btn.id}
-              className="p-4 rounded-[20px] bg-[#0A0A0A] border border-white/10 space-y-3 relative transition-all hover:border-white/20"
-            >
-              <div className="flex items-center justify-between gap-3 border-b border-white/5 pb-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-[8px] bg-[#151515] border border-white/10">
-                    {renderTypeIcon(btn.type)}
+            return (
+              <div
+                key={btn.id}
+                className="p-4 rounded-[20px] bg-[#0A0A0A] border border-white/10 hover:border-white/20 transition-all duration-200 space-y-3 relative group"
+                style={{ borderLeftColor: meta.color, borderLeftWidth: '4px' }}
+              >
+                {/* Top Row: Icon, Title Input, Move/Delete Controls */}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="p-2 rounded-[12px] bg-[#151515] border border-white/10 shrink-0">
+                      {meta.icon}
+                    </div>
+
+                    {/* Title Input */}
+                    <input
+                      type="text"
+                      value={btn.title}
+                      onChange={(e) => handleUpdate(btn.id, 'title', e.target.value)}
+                      placeholder="Tugma nomi"
+                      className="bg-transparent text-white font-extrabold text-sm border-b border-transparent hover:border-white/20 focus:border-[#B7FF00] outline-none px-1 py-0.5 w-full max-w-[180px] sm:max-w-[220px] transition-colors"
+                    />
+
+                    {/* Type Select Pill */}
+                    <select
+                      value={btn.type}
+                      onChange={(e) => handleUpdate(btn.id, 'type', e.target.value as LinkType)}
+                      className="bg-[#151515] border border-white/10 text-[#A1A1AA] text-[11px] rounded-[10px] px-2 py-1 outline-none hidden sm:block font-medium cursor-pointer"
+                    >
+                      {LINK_TYPE_OPTIONS.map((o) => (
+                        <option key={o.type} value={o.type}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  <span className="text-xs font-extrabold text-white">
-                    Tugma #{index + 1}
-                  </span>
+
+                  {/* Right Actions: Reorder, Expand, Delete */}
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      type="button"
+                      disabled={index === 0}
+                      onClick={() => handleMove(index, 'up')}
+                      className="p-1.5 rounded-[8px] bg-[#151515] hover:bg-white/10 text-[#A1A1AA] hover:text-white disabled:opacity-20 transition-colors"
+                      title="Yuqoriga surish"
+                    >
+                      <MoveUp className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={index === links.length - 1}
+                      onClick={() => handleMove(index, 'down')}
+                      className="p-1.5 rounded-[8px] bg-[#151515] hover:bg-white/10 text-[#A1A1AA] hover:text-white disabled:opacity-20 transition-colors"
+                      title="Pastga surish"
+                    >
+                      <MoveDown className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => toggleExpand(btn.id)}
+                      className="p-1.5 rounded-[8px] bg-[#151515] hover:bg-white/10 text-[#A1A1AA] hover:text-white transition-colors"
+                      title="Qo'shimcha izoh sozlamalari"
+                    >
+                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveButton(btn.id)}
+                      className="p-1.5 rounded-[8px] bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors ml-1"
+                      title="O'chirish"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    disabled={index === 0}
-                    onClick={() => handleMove(index, 'up')}
-                    className="p-1.5 rounded-[8px] bg-[#151515] hover:bg-white/10 text-[#A1A1AA] disabled:opacity-20"
-                    title="Yuqoriga surish"
-                  >
-                    <MoveUp className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={index === links.length - 1}
-                    onClick={() => handleMove(index, 'down')}
-                    className="p-1.5 rounded-[8px] bg-[#151515] hover:bg-white/10 text-[#A1A1AA] disabled:opacity-20"
-                    title="Pastga surish"
-                  >
-                    <MoveDown className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveButton(btn.id)}
-                    className="p-1.5 rounded-[8px] bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors ml-2"
-                    title="Ushbu tugmani o'chirish (kamaytirish)"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                {/* Type Selection */}
-                <div className="sm:col-span-4">
-                  <label className="block text-[10px] uppercase font-bold text-[#A1A1AA] mb-1">
-                    Tugma Turi
-                  </label>
-                  <select
-                    value={btn.type}
-                    onChange={(e) => handleUpdate(btn.id, 'type', e.target.value as LinkType)}
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs outline-none"
-                  >
-                    {LINK_TYPE_OPTIONS.map((opt) => (
-                      <option key={opt.type} value={opt.type}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Title */}
-                <div className="sm:col-span-4">
-                  <label className="block text-[10px] uppercase font-bold text-[#A1A1AA] mb-1">
-                    Tugma Nomi
-                  </label>
+                {/* Main Link / URL Input */}
+                <div>
                   <input
                     type="text"
-                    value={btn.title}
-                    onChange={(e) => handleUpdate(btn.id, 'title', e.target.value)}
-                    placeholder="Masalan: Telegram Asosiy Kanal"
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs font-bold outline-none"
+                    value={btn.url}
+                    onChange={(e) => handleUpdate(btn.id, 'url', e.target.value)}
+                    onBlur={(e) => handleSmartUrlBlur(btn.id, btn.type, e.target.value)}
+                    placeholder={
+                      btn.type === 'telegram'
+                        ? 'Masalan: @username yoki https://t.me/username'
+                        : btn.type === 'instagram'
+                        ? 'Masalan: @username yoki https://instagram.com/username'
+                        : btn.type === 'phone'
+                        ? 'Masalan: +998 90 123 45 67'
+                        : 'https://...'
+                    }
+                    className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[14px] px-3.5 py-2.5 text-white text-xs font-mono outline-none transition-all placeholder-[#A1A1AA]/40"
                   />
                 </div>
 
-                {/* Subtitle */}
-                <div className="sm:col-span-4">
-                  <label className="block text-[10px] uppercase font-bold text-[#A1A1AA] mb-1">
-                    Izoh / Subtitle
-                  </label>
-                  <input
-                    type="text"
-                    value={btn.subtitle || ''}
-                    onChange={(e) => handleUpdate(btn.id, 'subtitle', e.target.value)}
-                    placeholder="Masalan: Rasmiy kanalimizga o'tish"
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs outline-none"
-                  />
-                </div>
+                {/* Optional Expandable Subtitle Input */}
+                {isExpanded && (
+                  <div className="pt-2 border-t border-white/5 animate-fadeIn">
+                    <label className="block text-[10px] uppercase font-bold text-[#A1A1AA] mb-1">
+                      Tugma ostidagi izoh (Subtitle)
+                    </label>
+                    <input
+                      type="text"
+                      value={btn.subtitle || ''}
+                      onChange={(e) => handleUpdate(btn.id, 'subtitle', e.target.value)}
+                      placeholder="Masalan: Rasmiy kanalimizga o'tish"
+                      className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs outline-none"
+                    />
+                  </div>
+                )}
               </div>
-
-              {/* URL */}
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-[#A1A1AA] mb-1">
-                  Havola / Manzil (URL)
-                </label>
-                <input
-                  type="text"
-                  value={btn.url}
-                  onChange={(e) => handleUpdate(btn.id, 'url', e.target.value)}
-                  placeholder="https://..."
-                  className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs font-mono outline-none"
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
