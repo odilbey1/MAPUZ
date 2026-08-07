@@ -158,13 +158,22 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
         break;
     }
 
-    const href = btn.url.startsWith('http') || btn.url.startsWith('tel:') ? btn.url : `https://${btn.url}`;
+    let href = btn.url;
+    const isPhone = btn.type === 'phone';
+
+    if (isPhone) {
+      const cleaned = btn.url.replace(/[^\d+]/g, '');
+      const rawNumber = cleaned.startsWith('tel:') ? cleaned.replace('tel:', '') : cleaned;
+      href = `tel:${rawNumber.startsWith('+') ? rawNumber : '+' + rawNumber}`;
+    } else {
+      href = btn.url.startsWith('http://') || btn.url.startsWith('https://') || btn.url.startsWith('tel:') ? btn.url : `https://${btn.url}`;
+    }
 
     return (
       <a
         key={btn.id}
         href={href}
-        target={btn.url.startsWith('tel:') ? '_self' : '_blank'}
+        target={isPhone ? '_self' : '_blank'}
         rel="noopener noreferrer"
         className={`group relative w-full overflow-hidden rounded-[22px] bg-[#151515] p-4 border border-white/10 ${borderColor} transition-all duration-300 ${shadowColor} hover:-translate-y-0.5 flex items-center justify-between cursor-pointer`}
       >
@@ -183,7 +192,11 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
             )}
           </div>
         </div>
-        <ExternalLink className="w-5 h-5 text-[#A1A1AA] group-hover:text-white group-hover:translate-x-0.5 transition-all mr-2 shrink-0" />
+        {isPhone ? (
+          <Phone className="w-5 h-5 text-[#B7FF00] group-hover:scale-110 transition-transform mr-2 shrink-0" />
+        ) : (
+          <ExternalLink className="w-5 h-5 text-[#A1A1AA] group-hover:text-white group-hover:translate-x-0.5 transition-all mr-2 shrink-0" />
+        )}
       </a>
     );
   };
