@@ -72,8 +72,8 @@ export default function DynamicLinksManager({
         break;
       case 'phone':
         defaultTitle = existingCount === 0 ? 'Telefon' : `Telefon ${existingCount + 1}`;
-        defaultSubtitle = '+998 90 123 45 67';
-        defaultUrl = '+998901234567';
+        defaultSubtitle = '';
+        defaultUrl = '+998';
         break;
       case 'google_maps':
         defaultTitle = existingCount === 0 ? 'Joylashuv' : `Joylashuv ${existingCount + 1}`;

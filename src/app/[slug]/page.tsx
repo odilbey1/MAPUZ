@@ -74,7 +74,7 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
         title: 'Telefon',
         type: 'phone',
         url: `tel:${business.phone}`,
-        subtitle: business.phone,
+        subtitle: '',
       });
     }
 
@@ -185,7 +185,7 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
             <span className={`text-base sm:text-lg font-bold text-white ${titleHover} transition-colors truncate`}>
               {btn.title}
             </span>
-            {btn.subtitle && (
+            {btn.subtitle && btn.subtitle.trim() !== '' && !btn.subtitle.includes('+998 90 123 45 67') && (
               <span className="text-xs text-[#A1A1AA] truncate">
                 {btn.subtitle}
               </span>

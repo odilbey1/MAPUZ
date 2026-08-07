@@ -95,7 +95,7 @@ function normalizeBusiness(row: any): Business {
         title: 'Telefon',
         type: 'phone',
         url: row.phone,
-        subtitle: row.phone,
+        subtitle: '',
       });
     }
     if (row.google_maps) {

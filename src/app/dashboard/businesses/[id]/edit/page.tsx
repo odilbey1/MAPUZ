@@ -75,7 +75,7 @@ export default function EditBusinessPage({ params }: EditPageProps) {
               title: 'Telefon',
               type: 'phone',
               url: data.phone,
-              subtitle: data.phone,
+              subtitle: '',
             });
           }
           if (data.google_maps) {

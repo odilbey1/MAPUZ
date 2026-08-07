@@ -36,7 +36,7 @@ const DEFAULT_INITIAL_LINKS: BusinessLink[] = [
     title: 'Telefon',
     type: 'phone',
     url: '+998901234567',
-    subtitle: '+998 90 123 45 67',
+    subtitle: '',
   },
   {
     id: 'btn_map_1',
