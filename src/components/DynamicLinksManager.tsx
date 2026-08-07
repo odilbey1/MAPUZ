@@ -20,7 +20,8 @@ import {
   TelegramIcon,
   YoutubeIcon,
   TiktokIcon,
-  FacebookIcon
+  FacebookIcon,
+  YandexMapsIcon
 } from './Icons';
 
 interface DynamicLinksManagerProps {
@@ -33,6 +34,7 @@ const LINK_TYPE_OPTIONS: { type: LinkType; label: string; icon: React.ReactNode;
   { type: 'instagram', label: 'Instagram', icon: <InstagramIcon className="w-4 h-4 text-[#E1306C]" />, color: '#E1306C' },
   { type: 'phone', label: 'Telefon', icon: <Phone className="w-4 h-4 text-[#B7FF00]" />, color: '#B7FF00' },
   { type: 'google_maps', label: 'Joylashuv (Maps)', icon: <MapPin className="w-4 h-4 text-[#EA4335]" />, color: '#EA4335' },
+  { type: 'yandex_maps', label: 'Yandex Maps', icon: <YandexMapsIcon className="w-4 h-4 text-[#fc3f1d]" />, color: '#fc3f1d' },
   { type: 'website', label: 'Vebsayt', icon: <Globe className="w-4 h-4 text-emerald-400" />, color: '#10b981' },
   { type: 'youtube', label: 'YouTube', icon: <YoutubeIcon className="w-4 h-4 text-red-500" />, color: '#ef4444' },
   { type: 'tiktok', label: 'TikTok', icon: <TiktokIcon className="w-4 h-4 text-cyan-400" />, color: '#06b6d4' },
@@ -79,6 +81,11 @@ export default function DynamicLinksManager({
         defaultTitle = existingCount === 0 ? 'Joylashuv' : `Joylashuv ${existingCount + 1}`;
         defaultSubtitle = 'Google Maps xaritasidan ochish';
         defaultUrl = 'https://maps.google.com/';
+        break;
+      case 'yandex_maps':
+        defaultTitle = existingCount === 0 ? 'Yandex Maps' : `Yandex Maps ${existingCount + 1}`;
+        defaultSubtitle = 'Yandex Maps xaritasidan ochish';
+        defaultUrl = 'https://yandex.com/maps/';
         break;
       case 'youtube':
         defaultTitle = existingCount === 0 ? 'YouTube' : `YouTube ${existingCount + 1}`;

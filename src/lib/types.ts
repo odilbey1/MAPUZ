@@ -3,6 +3,7 @@ export type LinkType =
   | 'instagram'
   | 'phone'
   | 'google_maps'
+  | 'yandex_maps'
   | 'website'
   | 'youtube'
   | 'tiktok'

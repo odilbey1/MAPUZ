@@ -8,7 +8,8 @@ import {
   TelegramIcon,
   YoutubeIcon,
   TiktokIcon,
-  FacebookIcon
+  FacebookIcon,
+  YandexMapsIcon
 } from '@/components/Icons';
 
 interface PublicPageProps {
@@ -125,6 +126,13 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
         borderColor = 'hover:border-[#EA4335]/60';
         shadowColor = 'hover:shadow-[0_0_30px_rgba(234,67,53,0.3)]';
         titleHover = 'group-hover:text-[#EA4335]';
+        break;
+      case 'yandex_maps':
+        icon = <YandexMapsIcon className="w-7 h-7 text-white" />;
+        iconBg = 'bg-gradient-to-br from-[#fc3f1d] to-[#cc0000]';
+        borderColor = 'hover:border-[#fc3f1d]/60';
+        shadowColor = 'hover:shadow-[0_0_30px_rgba(252,63,29,0.3)]';
+        titleHover = 'group-hover:text-[#fc3f1d]';
         break;
       case 'youtube':
         icon = <YoutubeIcon className="w-7 h-7" />;
