@@ -139,7 +139,7 @@ export default function PublicProfileClient({
             <span className={`text-sm sm:text-base font-extrabold ${titleHover} transition-colors truncate tracking-tight`}>
               {btn.title}
             </span>
-            {btn.subtitle && btn.subtitle.trim() !== '' && !btn.subtitle.includes('+998 90 123 45 67') && (
+            {btn.subtitle && btn.subtitle.trim() !== '' && (
               <span className={`text-[11px] sm:text-xs ${subtitleText} truncate font-medium`}>
                 {btn.subtitle}
               </span>

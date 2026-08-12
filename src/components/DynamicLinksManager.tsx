@@ -10,8 +10,6 @@ import {
   Globe,
   Phone,
   MapPin,
-  ChevronDown,
-  ChevronUp,
   Sparkles,
   Link as LinkIcon
 } from 'lucide-react';
@@ -46,13 +44,6 @@ export default function DynamicLinksManager({
   links = [],
   onChange,
 }: DynamicLinksManagerProps) {
-  // Track expanded extra options per item ID
-  const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
-
-  const toggleExpand = (id: string) => {
-    setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
   // Add a new link of specified type
   const handleAddButton = (type: LinkType) => {
     const existingCount = links.filter((l) => l.type === type).length;
@@ -239,7 +230,6 @@ export default function DynamicLinksManager({
         <div className="space-y-3">
           {links.map((btn, index) => {
             const meta = getLinkMeta(btn.type);
-            const isExpanded = expandedIds[btn.id] || false;
 
             return (
               <div
@@ -301,15 +291,6 @@ export default function DynamicLinksManager({
 
                     <button
                       type="button"
-                      onClick={() => toggleExpand(btn.id)}
-                      className="p-1.5 rounded-[8px] bg-[#151515] hover:bg-white/10 text-[#A1A1AA] hover:text-white transition-colors"
-                      title="Qo'shimcha izoh sozlamalari"
-                    >
-                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                    </button>
-
-                    <button
-                      type="button"
                       onClick={() => handleRemoveButton(btn.id)}
                       className="p-1.5 rounded-[8px] bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors ml-1"
                       title="O'chirish"
@@ -319,41 +300,53 @@ export default function DynamicLinksManager({
                   </div>
                 </div>
 
-                {/* Main Link / URL Input */}
-                <div>
-                  <input
-                    type="text"
-                    value={btn.url}
-                    onChange={(e) => handleUpdate(btn.id, 'url', e.target.value)}
-                    onBlur={(e) => handleSmartUrlBlur(btn.id, btn.type, e.target.value)}
-                    placeholder={
-                      btn.type === 'telegram'
-                        ? 'Masalan: @username yoki https://t.me/username'
-                        : btn.type === 'instagram'
-                        ? 'Masalan: @username yoki https://instagram.com/username'
-                        : btn.type === 'phone'
-                        ? 'Masalan: +998 90 123 45 67'
-                        : 'https://...'
-                    }
-                    className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[14px] px-3.5 py-2.5 text-white text-xs font-mono outline-none transition-all placeholder-[#A1A1AA]/40"
-                  />
-                </div>
+                {/* 2-Column Inputs Grid: URL and Subtitle (Izoh) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-wider font-bold text-[#A1A1AA] mb-1">
+                      Havola / Manzil (URL)
+                    </label>
+                    <input
+                      type="text"
+                      value={btn.url}
+                      onChange={(e) => handleUpdate(btn.id, 'url', e.target.value)}
+                      onBlur={(e) => handleSmartUrlBlur(btn.id, btn.type, e.target.value)}
+                      placeholder={
+                        btn.type === 'telegram'
+                          ? 'Masalan: @username yoki https://t.me/username'
+                          : btn.type === 'instagram'
+                          ? 'Masalan: @username yoki https://instagram.com/username'
+                          : btn.type === 'phone'
+                          ? 'Masalan: +998 90 123 45 67'
+                          : 'https://...'
+                      }
+                      className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[14px] px-3.5 py-2.5 text-white text-xs font-mono outline-none transition-all placeholder-[#A1A1AA]/40"
+                    />
+                  </div>
 
-                {/* Optional Expandable Subtitle Input */}
-                {isExpanded && (
-                  <div className="pt-2 border-t border-white/5 animate-fadeIn">
-                    <label className="block text-[10px] uppercase font-bold text-[#A1A1AA] mb-1">
-                      Tugma ostidagi izoh (Subtitle)
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-wider font-bold text-[#A1A1AA] mb-1">
+                      Ostki izoh (Subtitle / Matn)
                     </label>
                     <input
                       type="text"
                       value={btn.subtitle || ''}
                       onChange={(e) => handleUpdate(btn.id, 'subtitle', e.target.value)}
-                      placeholder="Masalan: Telegram orqali bog'lanish"
-                      className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[12px] px-3 py-2 text-white text-xs outline-none"
+                      placeholder={
+                        btn.type === 'instagram'
+                          ? 'Sahifamizni kuzatib boring'
+                          : btn.type === 'tiktok'
+                          ? 'Videolarimizni tomosha qiling'
+                          : btn.type === 'telegram'
+                          ? 'Telegram orqali bog\'lanish'
+                          : btn.type === 'google_maps'
+                          ? 'Google Maps xaritasidan ochish'
+                          : 'Tugma ostidagi izoh'
+                      }
+                      className="w-full bg-[#151515] border border-white/10 focus:border-[#B7FF00] rounded-[14px] px-3.5 py-2.5 text-white text-xs outline-none transition-all placeholder-[#A1A1AA]/40"
                     />
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
