@@ -19,7 +19,8 @@ import {
   YoutubeIcon,
   TiktokIcon,
   FacebookIcon,
-  YandexMapsIcon
+  YandexMapsIcon,
+  TwoGisIcon
 } from './Icons';
 
 interface DynamicLinksManagerProps {
@@ -33,6 +34,7 @@ const LINK_TYPE_OPTIONS: { type: LinkType; label: string; icon: React.ReactNode;
   { type: 'phone', label: 'Telefon', icon: <Phone className="w-4 h-4 text-[#B7FF00]" />, color: '#B7FF00' },
   { type: 'google_maps', label: 'Joylashuv (Maps)', icon: <MapPin className="w-4 h-4 text-[#EA4335]" />, color: '#EA4335' },
   { type: 'yandex_maps', label: 'Yandex Maps', icon: <YandexMapsIcon className="w-4 h-4 text-[#fc3f1d]" />, color: '#fc3f1d' },
+  { type: '2gis', label: '2GIS', icon: <TwoGisIcon className="w-4 h-4 text-[#2EBF53]" />, color: '#2EBF53' },
   { type: 'website', label: 'Vebsayt', icon: <Globe className="w-4 h-4 text-emerald-400" />, color: '#10b981' },
   { type: 'youtube', label: 'YouTube', icon: <YoutubeIcon className="w-4 h-4 text-red-500" />, color: '#ef4444' },
   { type: 'tiktok', label: 'TikTok', icon: <TiktokIcon className="w-4 h-4 text-cyan-400" />, color: '#06b6d4' },
@@ -77,6 +79,11 @@ export default function DynamicLinksManager({
         defaultTitle = existingCount === 0 ? 'Yandex Maps' : `Yandex Maps ${existingCount + 1}`;
         defaultSubtitle = 'Yandex Maps xaritasidan ochish';
         defaultUrl = 'https://yandex.com/maps/';
+        break;
+      case '2gis':
+        defaultTitle = existingCount === 0 ? '2GIS' : `2GIS ${existingCount + 1}`;
+        defaultSubtitle = '2GIS xaritasidan ochish';
+        defaultUrl = 'https://2gis.uz/';
         break;
       case 'youtube':
         defaultTitle = existingCount === 0 ? 'YouTube' : `YouTube ${existingCount + 1}`;
@@ -153,7 +160,7 @@ export default function DynamicLinksManager({
           val = `+${cleaned}`;
         }
       }
-    } else if (type === 'website' || type === 'youtube' || type === 'tiktok' || type === 'facebook') {
+    } else if (type === 'website' || type === 'youtube' || type === 'tiktok' || type === 'facebook' || type === '2gis' || type === 'yandex_maps' || type === 'google_maps') {
       if (!val.startsWith('http://') && !val.startsWith('https://')) {
         val = `https://${val}`;
       }

@@ -51,3 +51,11 @@ export function YandexMapsIcon({ className = "w-5 h-5" }: { className?: string }
     </svg>
   );
 }
+
+export function TwoGisIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm-1.7 10.5v-1.4c.75-.55 1.8-1.1 1.8-1.9 0-.6-.4-1-1.1-1-.7 0-1.1.4-1.2 1.1H8.5c.1-1.5 1.1-2.4 2.5-2.4 1.6 0 2.5.9 2.5 2.2 0 1.2-1.1 2.1-2 2.8h2.1v1.3H10.3z"/>
+    </svg>
+  );
+}

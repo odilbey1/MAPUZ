@@ -10,7 +10,8 @@ import {
   YoutubeIcon,
   TiktokIcon,
   FacebookIcon,
-  YandexMapsIcon
+  YandexMapsIcon,
+  TwoGisIcon
 } from '@/components/Icons';
 
 interface PublicProfileClientProps {
@@ -71,6 +72,13 @@ export default function PublicProfileClient({
         borderColor = 'hover:border-[#fc3f1d]/60';
         shadowColor = 'hover:shadow-[0_0_25px_rgba(252,63,29,0.3)]';
         titleHover = 'group-hover:text-[#fc3f1d]';
+        break;
+      case '2gis':
+        icon = <TwoGisIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        iconBg = 'bg-gradient-to-br from-[#2EBF53] via-[#28a745] to-[#1e7e34]';
+        borderColor = 'hover:border-[#2EBF53]/60';
+        shadowColor = 'hover:shadow-[0_0_25px_rgba(46,191,83,0.3)]';
+        titleHover = 'group-hover:text-[#2EBF53]';
         break;
       case 'youtube':
         icon = <YoutubeIcon className="w-5 h-5 sm:w-6 sm:h-6" />;

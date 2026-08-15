@@ -21,6 +21,8 @@ const LINK_TYPE_OPTIONS: { type: LinkType; label: string }[] = [
   { type: 'instagram', label: 'Instagram' },
   { type: 'phone', label: 'Telefon' },
   { type: 'google_maps', label: 'Joylashuv (Google Maps)' },
+  { type: 'yandex_maps', label: 'Yandex Maps' },
+  { type: '2gis', label: '2GIS' },
   { type: 'website', label: 'Vebsayt' },
   { type: 'youtube', label: 'YouTube' },
   { type: 'tiktok', label: 'TikTok' },

@@ -4,6 +4,7 @@ export type LinkType =
   | 'phone'
   | 'google_maps'
   | 'yandex_maps'
+  | '2gis'
   | 'website'
   | 'youtube'
   | 'tiktok'
