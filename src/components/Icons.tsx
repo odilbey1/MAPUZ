@@ -47,10 +47,11 @@ export function FacebookIcon({ className = "w-5 h-5" }: { className?: string }) 
 export function YandexMapsIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+      <path d="M14.5 3h-3.8c-2.8 0-4.7 1.8-4.7 4.5 0 2.2 1.3 3.7 3.2 4.2L6 21h3.4l3.1-8.5h1.2V21h3.3V3h-2.5zm-.8 6.8h-2.1c-1.3 0-2-.7-2-1.9 0-1.2.7-1.9 2-1.9h2.1v3.8z"/>
     </svg>
   );
 }
+
 
 export function TwoGisIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
