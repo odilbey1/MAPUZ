@@ -34,39 +34,64 @@ export function PhoneBadgeIcon({ className = "w-8 h-8" }: { className?: string }
   );
 }
 
-// 4. Google Maps Multi-Color Pin (Joylashuv)
+// 4. Google Maps Multi-Color Pin (with solid white center matching reference)
 export function GoogleMapsPinIcon({ className = "w-8 h-8" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 48 48" fill="none">
-      <path d="M24 4C15.16 4 8 11.16 8 20c0 12 16 24 16 24s16-12 16-24c0-8.84-7.16-16-16-16z" fill="#EA4335" />
-      <path d="M33 13C30 9 27 5 24 4v22l11-13z" fill="#FBBC04" />
-      <path d="M20 32l4 12s16-12 16-24c0-3.3-.9-6.4-2.5-9.1L20 32z" fill="#34A853" />
-      <path d="M8 20c0 4.8 2.4 9.8 6.2 14.1l11.8-17.1V4C15.16 4 8 11.16 8 20z" fill="#4285F4" />
-      <circle cx="24" cy="18" r="6.5" fill="#FFFFFF" />
-      <circle cx="24" cy="18" r="4.5" fill="#1A73E8" />
+    <svg className={className} viewBox="0 0 48 56" fill="none">
+      {/* Top Left: Red Arch */}
+      <path d="M24 4C14.06 4 6 12.06 6 22c0 5.88 2.84 11.11 7.22 14.41L24 22V4z" fill="#EA4335" />
+      {/* Top Right: Blue Arch */}
+      <path d="M24 4v18l10.78 14.41C39.16 33.11 42 27.88 42 22c0-9.94-8.06-18-18-18z" fill="#4285F4" />
+      {/* Bottom Left: Golden Yellow */}
+      <path d="M13.22 36.41L24 52V22L13.22 36.41z" fill="#FBBC04" />
+      {/* Bottom Right & Tip: Green */}
+      <path d="M24 22v30l10.78-15.59L24 22z" fill="#34A853" />
+      {/* Center: Solid Pure White Circle (Matching Reference Image) */}
+      <circle cx="24" cy="22" r="7.5" fill="#FFFFFF" />
     </svg>
   );
 }
 
-// 5. Yandex Maps Red Pin Icon
+// 5. Yandex Maps Red Teardrop Pin (with solid white center matching reference)
 export function YandexPinIcon({ className = "w-8 h-8" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 8 12 8 12s8-6.75 8-12c0-4.42-3.58-8-8-8z" fill="#E61414" />
-      <circle cx="12" cy="9.5" r="3" fill="#FFFFFF" />
+    <svg className={className} viewBox="0 0 48 56" fill="none">
+      <defs>
+        <linearGradient id="yandexRedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FF4F38" />
+          <stop offset="100%" stopColor="#E61414" />
+        </linearGradient>
+      </defs>
+      {/* Red Location Teardrop */}
+      <path d="M24 4C13.5 4 5 12.5 5 23c0 13.5 19 29 19 29s19-15.5 19-29c0-10.5-8.5-19-19-19z" fill="url(#yandexRedGrad)" />
+      {/* Center Pure White Disc */}
+      <circle cx="24" cy="23" r="7.5" fill="#FFFFFF" />
     </svg>
   );
 }
 
-// 6. 2GIS Official Map Badge
+// 6. 2GIS Official Map Badge (Yellow top, Green bottom, white road & Blue Pin matching reference)
 export function TwoGisBadgeIcon({ className = "w-8 h-8" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 36 36" fill="none">
-      <rect width="36" height="36" rx="9" fill="#00AA44" />
-      <path d="M0 24L12 28L24 24L36 28V36H0V24Z" fill="#F4B400" />
-      <circle cx="18" cy="14" r="7.5" fill="#0088FF" />
-      <path d="M18 9C15.24 9 13 11.24 13 14C13 17.5 18 23 18 23S23 17.5 23 14C23 11.24 20.76 9 18 9Z" fill="white" />
-      <circle cx="18" cy="14" r="3" fill="#0088FF" />
+    <svg className={className} viewBox="0 0 48 48" fill="none">
+      <defs>
+        <clipPath id="twogisClip">
+          <rect width="48" height="48" rx="13" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#twogisClip)">
+        {/* Top: Vibrant Golden Yellow */}
+        <rect width="48" height="22" fill="#FBB800" />
+        {/* Bottom: Fresh Vivid Green */}
+        <rect y="21" width="48" height="27" fill="#1EB548" />
+        {/* White Diagonal Road with perspective */}
+        <path d="M0 34L48 24V28L0 38V34Z" fill="#FFFFFF" />
+        <path d="M0 38L48 28V29L0 39V38Z" fill="#E2E8F0" />
+        {/* Blue Location Pin with Soft White Outline */}
+        <path d="M24 7C17.9 7 13 11.9 13 18c0 5.8 11 18 11 18s11-12.2 11-18c0-6.1-4.9-11-11-11z" fill="#0080FF" stroke="#FFFFFF" strokeWidth="2.5" strokeLinejoin="round" />
+        {/* Center White Dot inside Blue Pin */}
+        <circle cx="24" cy="17" r="4.2" fill="#FFFFFF" />
+      </g>
     </svg>
   );
 }
