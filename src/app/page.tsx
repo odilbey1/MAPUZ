@@ -60,7 +60,7 @@ export default function LandingPage() {
                   </Link>
 
                   <Link
-                    href="/suzangaron_fayz"
+                    href="/demo"
                     target="_blank"
                     className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#151515] hover:bg-[#1f1f1f] text-[#A1A1AA] hover:text-white px-6 py-4 rounded-[22px] font-semibold text-base border border-white/10 transition-all"
                   >

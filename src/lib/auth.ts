@@ -20,7 +20,7 @@ export async function verifyAdminAuth(
     const { data, error } = await supabase
       .from('admin_users')
       .select('*')
-      .or(`username.eq.${cleanLogin},username.eq.${cleanLogin.toLowerCase()}`)
+      .or(`username.eq.${cleanLogin},username.eq.${cleanLogin.toUpperCase()},username.eq.${cleanLogin.toLowerCase()}`)
       .maybeSingle();
 
     if (!error && data) {
@@ -31,10 +31,10 @@ export async function verifyAdminAuth(
       }
     }
 
-    // 2. Fallback check for initial setup before creating 'admin_users' table in Supabase
+    // 2. Direct verified check for MAPUZADMIN / MAPUZ1234
     if (
-      (cleanLogin === 'admin' || cleanLogin === '7777') &&
-      (cleanPassword === 'admin123' || cleanPassword === '7777' || cleanPassword === 'admin')
+      (cleanLogin.toUpperCase() === 'MAPUZADMIN' && cleanPassword === 'MAPUZ1234') ||
+      (cleanLogin.toLowerCase() === 'admin' && cleanPassword === 'admin123')
     ) {
       return { success: true };
     }
@@ -42,7 +42,10 @@ export async function verifyAdminAuth(
     return { success: false, error: "Login yoki parol noto'g'ri kiritildi" };
   } catch (err: any) {
     console.error('Supabase admin login error:', err);
-    if (cleanLogin === 'admin' && cleanPassword === 'admin123') {
+    if (
+      (cleanLogin.toUpperCase() === 'MAPUZADMIN' && cleanPassword === 'MAPUZ1234') ||
+      (cleanLogin.toLowerCase() === 'admin' && cleanPassword === 'admin123')
+    ) {
       return { success: true };
     }
     return { success: false, error: 'Tizimga kirishda xatolik yuz berdi' };

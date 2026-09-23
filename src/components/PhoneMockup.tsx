@@ -20,22 +20,23 @@ export default function PhoneMockup() {
         <div className="w-full flex flex-col items-center text-center z-10">
           {/* Circular Avatar with Glowing White Ring */}
           <div className="relative mb-3 group">
-            <img
-              src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=300&h=300&fit=crop&crop=faces"
-              alt="Studio Logo"
-              className="w-20 h-20 rounded-full object-cover border-[3px] border-white shadow-[0_0_20px_rgba(255,255,255,0.25)] bg-black"
-            />
+            <div className="w-20 h-20 rounded-full border-[3px] border-white shadow-[0_0_20px_rgba(255,255,255,0.25)] bg-[#111218] flex items-center justify-center">
+              <div className="w-11 h-11 rounded-[14px] bg-[#B7FF00] flex items-center justify-center text-[#0A0A0A] font-black text-2xl shadow-[0_0_20px_rgba(183,255,0,0.5)]">
+                M
+              </div>
+            </div>
           </div>
 
           {/* Business Name */}
           <h3 className="text-lg font-black text-white tracking-tight">
-            Vanilla Wedding studio
+            MAPUZ Demo Studio
           </h3>
 
           {/* Description */}
           <p className="text-[11px] text-[#A6A7B8] mt-1 max-w-[250px] leading-relaxed">
-            To'y va maxsus tadbirlaringizni unutilmas xotiralarga aylantiruvchi professional foto va videostudiya.
+            Barcha ijtimoiy tarmoqlar, aloqa raqamlari va xarita lokatsiyalari bitta professional sahifada.
           </p>
+
 
           {/* 5 Vibrant Gradient Buttons */}
           <div className="w-full space-y-2.5 mt-4">

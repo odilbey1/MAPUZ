@@ -37,7 +37,7 @@ export default function Navbar() {
         {/* Action Button */}
         <div className="flex items-center gap-4">
           <Link
-            href="/dashboard"
+            href="/login"
             className="flex items-center gap-2 bg-[#151515] hover:bg-[#1f1f1f] text-white border border-white/10 px-5 py-2.5 rounded-[22px] text-sm font-semibold transition-all hover:border-[#B7FF00]/40 hover:shadow-[0_0_15px_rgba(183,255,0,0.15)] active:scale-95"
           >
             <LayoutDashboard className="w-4 h-4 text-[#B7FF00]" />

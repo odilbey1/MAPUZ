@@ -45,6 +45,10 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   ];
 
   const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('mapuz_auth');
+      localStorage.removeItem('mapuz_user');
+    }
     router.push('/login');
   };
 
