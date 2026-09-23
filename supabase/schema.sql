@@ -67,3 +67,33 @@ CREATE POLICY "Public Update Logos" ON storage.objects
 
 CREATE POLICY "Public Delete Logos" ON storage.objects
   FOR DELETE USING (bucket_id = 'logos');
+
+-- 5. Setup Admin Users Table (for dashboard login)
+CREATE TABLE IF NOT EXISTS public.admin_users (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public read admin_users" ON public.admin_users;
+CREATE POLICY "Allow public read admin_users" ON public.admin_users
+  FOR SELECT USING (true);
+
+-- Insert default admin user if not exists
+INSERT INTO public.admin_users (username, password)
+VALUES ('admin', 'admin123')
+ON CONFLICT (username) DO NOTHING;
+
+-- 6. Grant Permissions to API Roles (anon, authenticated, service_role)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;
+
