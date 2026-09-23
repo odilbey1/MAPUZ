@@ -3,15 +3,19 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Business, BusinessLink } from '@/lib/types';
-import { Phone, MapPin, Globe, Sun, Moon, Link as LinkIcon } from 'lucide-react';
+import { Sun, Moon, Link as LinkIcon } from 'lucide-react';
 import {
-  InstagramIcon,
-  TelegramIcon,
-  YoutubeIcon,
-  TiktokIcon,
-  FacebookIcon,
-  YandexMapsIcon,
-  TwoGisIcon
+  TelegramPlaneIcon,
+  InstagramGradientIcon,
+  PhoneBadgeIcon,
+  GoogleMapsPinIcon,
+  YandexPinIcon,
+  TwoGisBadgeIcon,
+  WebsiteGlobeIcon,
+  YouTubeBadgeIcon,
+  TikTokNeonIcon,
+  FacebookCircleIcon,
+  ChainLinkIcon,
 } from '@/components/Icons';
 
 interface PublicProfileClientProps {
@@ -31,62 +35,101 @@ export default function PublicProfileClient({
   };
 
   const renderLinkButton = (btn: BusinessLink) => {
-    let icon = <Globe className="w-5 h-5 sm:w-6 sm:h-6" />;
-    let gradientClass = 'bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#D946EF]';
-    let shadowClass = 'hover:shadow-[0_10px_25px_rgba(139,92,246,0.45)]';
+    let icon = <ChainLinkIcon className="w-7 h-7" />;
+    let gradientClass = 'bg-gradient-to-r from-[#2a0e4a] via-[#451478] to-[#19082e]';
+    let borderClass = 'border border-[#d500f9]/40';
+    let shadowClass = 'hover:shadow-[0_8px_30px_rgba(213,0,249,0.35)]';
+    let isYandex = false;
 
     switch (btn.type) {
+      // 1. Telegram - Neon Blue Glow
       case 'telegram':
-        icon = <TelegramIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#179cde] via-[#24A1DE] to-[#36b2f0]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(36,161,222,0.45)]';
+        icon = <TelegramPlaneIcon className="w-10 h-10 sm:w-11 sm:h-11" />;
+        gradientClass = 'bg-gradient-to-r from-[#0052d4] via-[#0072ff] to-[#0039a6]';
+        borderClass = 'border border-[#00d2ff]/40';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(0,114,255,0.45)]';
         break;
+
+      // 2. Instagram - Vivid Magenta Sunset Glow
       case 'instagram':
-        icon = <InstagramIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#F05A4F] via-[#D82E7E] to-[#8D2B9F]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(216,46,126,0.45)]';
+        icon = <InstagramGradientIcon className="w-9 h-9 sm:w-10 sm:h-10" />;
+        gradientClass = 'bg-gradient-to-r from-[#700060] via-[#b80058] to-[#e63946]';
+        borderClass = 'border border-[#ff2a8d]/40';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(225,48,108,0.45)]';
         break;
+
+      // 3. Telefon - Emerald Mint Green Glow
       case 'phone':
-        icon = <Phone className="w-5 h-5 sm:w-6 sm:h-6 fill-white" />;
-        gradientClass = 'bg-gradient-to-r from-[#20C063] via-[#2ECC71] to-[#27AE60]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(39,174,96,0.45)]';
+        icon = <PhoneBadgeIcon className="w-9 h-9 sm:w-10 sm:h-10" />;
+        gradientClass = 'bg-gradient-to-r from-[#0b4629] via-[#147a46] to-[#052b17]';
+        borderClass = 'border border-[#20c997]/50';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(25,135,84,0.45)]';
         break;
-      case 'yandex_maps':
-        icon = <YandexMapsIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#FF5722] via-[#FF7043] to-[#FFA726]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(255,112,67,0.45)]';
-        break;
+
+      // 4. Joylashuv (Google Maps) - Deep Dark Warm Amber
       case 'google_maps':
-        icon = <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#2196F3] via-[#00B0FF] to-[#00E676]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(0,176,255,0.45)]';
+        icon = <GoogleMapsPinIcon className="w-8 h-8 sm:w-9 sm:h-9" />;
+        gradientClass = 'bg-gradient-to-r from-[#2a130c] via-[#4d2212] to-[#1d0b05]';
+        borderClass = 'border border-[#ff6d00]/40';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(255,109,0,0.35)]';
         break;
+
+      // 5. Yandex Maps - Crisp Glossy White with Red Pin & Text
+      case 'yandex_maps':
+        icon = <YandexPinIcon className="w-8 h-8 sm:w-9 sm:h-9" />;
+        gradientClass = 'bg-gradient-to-r from-[#FFFFFF] via-[#F4F5F7] to-[#E5E7EB]';
+        borderClass = 'border border-white/90';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(255,255,255,0.35)]';
+        isYandex = true;
+        break;
+
+      // 6. 2GIS - Dark Forest to Mint Green
       case '2gis':
-        icon = <TwoGisIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#28A745] via-[#20C997] to-[#17A2B8]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(32,201,151,0.45)]';
+        icon = <TwoGisBadgeIcon className="w-9 h-9 sm:w-10 sm:h-10" />;
+        gradientClass = 'bg-gradient-to-r from-[#09351e] via-[#0e5c33] to-[#072414]';
+        borderClass = 'border border-[#00e676]/45';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(0,230,118,0.4)]';
         break;
-      case 'youtube':
-        icon = <YoutubeIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#FF0000] via-[#E50914] to-[#B71C1C]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(229,9,20,0.45)]';
-        break;
-      case 'tiktok':
-        icon = <TiktokIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#00F2FE] via-[#4FACFE] to-[#111111]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(79,172,254,0.45)]';
-        break;
-      case 'facebook':
-        icon = <FacebookIcon className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#1877F2] to-[#0D47A1]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(24,119,242,0.45)]';
-        break;
+
+      // 7. Vebsayt (Website) - Electric Royal Blue
       case 'website':
+        icon = <WebsiteGlobeIcon className="w-8 h-8 sm:w-9 sm:h-9" />;
+        gradientClass = 'bg-gradient-to-r from-[#003882] via-[#0055b3] to-[#002255]';
+        borderClass = 'border border-[#00b0ff]/45';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(0,85,179,0.45)]';
+        break;
+
+      // 8. YouTube - Deep Ruby Crimson Red
+      case 'youtube':
+        icon = <YouTubeBadgeIcon className="w-9 h-9 sm:w-10 sm:h-10" />;
+        gradientClass = 'bg-gradient-to-r from-[#590000] via-[#8a0000] to-[#330000]';
+        borderClass = 'border border-[#ff1744]/45';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(255,0,0,0.45)]';
+        break;
+
+      // 9. TikTok - Midnight Black with Cyan/Pink Edge
+      case 'tiktok':
+        icon = <TikTokNeonIcon className="w-7 h-7 sm:w-8 sm:h-8" />;
+        gradientClass = 'bg-gradient-to-r from-[#110a18] via-[#0f1019] to-[#0a1216]';
+        borderClass = 'border border-[#00f2fe]/35';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(0,242,254,0.3)]';
+        break;
+
+      // 10. Facebook - Royal Cobalt Blue
+      case 'facebook':
+        icon = <FacebookCircleIcon className="w-9 h-9 sm:w-10 sm:h-10" />;
+        gradientClass = 'bg-gradient-to-r from-[#002e70] via-[#0047a8] to-[#001c44]';
+        borderClass = 'border border-[#2979ff]/45';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(24,119,242,0.45)]';
+        break;
+
+      // 11. Boshqa / Custom - Cosmic Ultraviolet
       case 'custom':
       default:
-        icon = <Globe className="w-5 h-5 sm:w-6 sm:h-6" />;
-        gradientClass = 'bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#D946EF]';
-        shadowClass = 'hover:shadow-[0_10px_25px_rgba(139,92,246,0.45)]';
+        icon = <ChainLinkIcon className="w-8 h-8 sm:w-9 sm:h-9" />;
+        gradientClass = 'bg-gradient-to-r from-[#2a0e4a] via-[#451478] to-[#19082e]';
+        borderClass = 'border border-[#d500f9]/45';
+        shadowClass = 'hover:shadow-[0_8px_30px_rgba(213,0,249,0.35)]';
         break;
     }
 
@@ -101,33 +144,43 @@ export default function PublicProfileClient({
       href = btn.url.startsWith('http://') || btn.url.startsWith('https://') || btn.url.startsWith('tel:') ? btn.url : `https://${btn.url}`;
     }
 
+    const titleColorClass = isYandex ? 'text-[#18181B]' : 'text-white';
+    const subtitleColorClass = isYandex ? 'text-[#555]' : 'text-white/80';
+
     return (
       <a
         key={btn.id}
         href={href}
         target={isPhone ? '_self' : '_blank'}
         rel="noopener noreferrer"
-        className={`group relative w-full overflow-hidden rounded-[20px] ${gradientClass} p-2.5 sm:p-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${shadowClass} flex items-center justify-between cursor-pointer border border-white/15`}
+        className={`group relative w-full overflow-hidden rounded-[22px] ${gradientClass} ${borderClass} p-3 sm:p-3.5 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${shadowClass} flex items-center justify-between cursor-pointer before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/15 before:via-white/5 before:to-transparent before:pointer-events-none`}
       >
-        {/* Left: Translucent Frosted Glass Badge with Icon */}
-        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-[14px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 shadow-inner border border-white/25 group-hover:scale-105 transition-transform">
+        {/* Left: Brand Icon */}
+        <div className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0 relative z-10 group-hover:scale-105 transition-transform">
           {icon}
         </div>
 
         {/* Center: Title & Optional Subtitle */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-2 min-w-0">
-          <span className="text-sm sm:text-base font-bold text-white tracking-wide drop-shadow-sm truncate w-full">
-            {btn.title}
+        <div className="flex-1 flex flex-col items-center justify-center text-center px-2 min-w-0 relative z-10">
+          <span className={`text-sm sm:text-base font-bold tracking-wide ${titleColorClass} truncate w-full drop-shadow-sm`}>
+            {isYandex ? (
+              <span>
+                <span className="text-[#E61414] font-black">Y</span>
+                {btn.title.startsWith('Y') || btn.title.startsWith('y') ? btn.title.slice(1) : btn.title}
+              </span>
+            ) : (
+              btn.title
+            )}
           </span>
           {btn.subtitle && btn.subtitle.trim() !== '' && (
-            <span className="text-[11px] sm:text-xs text-white/85 font-medium truncate w-full mt-0.5">
+            <span className={`text-[11px] sm:text-xs font-medium truncate w-full mt-0.5 ${subtitleColorClass}`}>
               {btn.subtitle}
             </span>
           )}
         </div>
 
         {/* Right: Invisible Spacer to keep text mathematically centered */}
-        <div className="w-11 sm:w-12 shrink-0 pointer-events-none" />
+        <div className="w-10 sm:w-11 shrink-0 pointer-events-none" />
       </a>
     );
   };
@@ -138,7 +191,7 @@ export default function PublicProfileClient({
     <div
       className={`min-h-screen transition-colors duration-500 flex flex-col items-center justify-between py-6 px-4 sm:px-6 relative overflow-x-hidden ${
         isDark
-          ? 'bg-[#0c0d14] text-white selection:bg-white/20 selection:text-white'
+          ? 'bg-[#090a10] text-white selection:bg-white/20 selection:text-white'
           : 'bg-[#F2F3F7] text-[#12131A] selection:bg-black selection:text-white'
       }`}
     >
@@ -156,7 +209,7 @@ export default function PublicProfileClient({
           onClick={toggleTheme}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-300 active:scale-95 shadow-sm ${
             isDark
-              ? 'bg-[#1b1c26]/80 border-white/10 text-white/80 hover:text-white hover:bg-white/10'
+              ? 'bg-[#151622]/80 border-white/10 text-white/80 hover:text-white hover:bg-white/10'
               : 'bg-white/90 border-black/10 text-black/80 hover:text-black hover:bg-white'
           }`}
           title="Mavzuni o'zgartirish (Kunduzgi / Kechki)"
@@ -175,11 +228,11 @@ export default function PublicProfileClient({
         </button>
       </div>
 
-      {/* Main Glassmorphic Card Container (Matching Reference Design) */}
+      {/* Main Glassmorphic Card Container */}
       <div
         className={`w-full max-w-[440px] rounded-[38px] p-6 sm:p-7 border transition-all duration-500 shadow-2xl relative z-10 flex flex-col items-center text-center my-auto ${
           isDark
-            ? 'bg-[#1b1c26]/90 backdrop-blur-xl border-white/[0.08] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)]'
+            ? 'bg-[#161722]/90 backdrop-blur-xl border-white/[0.08] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)]'
             : 'bg-white/95 backdrop-blur-xl border-black/[0.06] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)]'
         }`}
       >
@@ -212,12 +265,12 @@ export default function PublicProfileClient({
           </p>
         )}
 
-        {/* Dynamic Vibrant Gradient Buttons List */}
+        {/* Dynamic Buttons List with Authentic 3D Glass Colors */}
         <div className="w-full space-y-3 sm:space-y-3.5 mt-6">
           {allButtons.length === 0 ? (
             <div
               className={`p-5 rounded-[20px] text-xs font-medium border ${
-                isDark ? 'bg-[#151620] border-white/10 text-[#A1A1AA]' : 'bg-gray-50 border-black/10 text-[#71717A]'
+                isDark ? 'bg-[#10111a] border-white/10 text-[#A1A1AA]' : 'bg-gray-50 border-black/10 text-[#71717A]'
               }`}
             >
               Hozircha hech qanday havola qo'shilmagan.
@@ -234,7 +287,7 @@ export default function PublicProfileClient({
           href="/"
           className={`px-5 py-2.5 rounded-full border text-xs font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg active:scale-95 ${
             isDark
-              ? 'bg-[#1b1c26]/90 backdrop-blur-md border-white/10 text-[#C4C4D0] hover:text-white hover:bg-[#252636]'
+              ? 'bg-[#161722]/90 backdrop-blur-md border-white/10 text-[#C4C4D0] hover:text-white hover:bg-[#202130]'
               : 'bg-white/90 backdrop-blur-md border-black/10 text-[#4A4B5A] hover:text-black hover:bg-white'
           }`}
         >

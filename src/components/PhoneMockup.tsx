@@ -1,8 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Phone, MapPin, Link as LinkIcon } from 'lucide-react';
-import { InstagramIcon, TelegramIcon, YandexMapsIcon } from '@/components/Icons';
+import { Link as LinkIcon } from 'lucide-react';
+import {
+  TelegramPlaneIcon,
+  InstagramGradientIcon,
+  PhoneBadgeIcon,
+  GoogleMapsPinIcon,
+  YandexPinIcon,
+} from '@/components/Icons';
 
 export default function PhoneMockup() {
   return (
@@ -13,7 +19,7 @@ export default function PhoneMockup() {
       </div>
 
       {/* Screen Content Container - Glassmorphic Slate */}
-      <div className="w-full h-full bg-[#1b1c26] rounded-[38px] pt-8 pb-5 px-3.5 flex flex-col items-center justify-between overflow-y-auto no-scrollbar border border-white/10 relative">
+      <div className="w-full h-full bg-[#161722] rounded-[38px] pt-8 pb-5 px-3.5 flex flex-col items-center justify-between overflow-y-auto no-scrollbar border border-white/10 relative">
         {/* Glow ambient background inside phone */}
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-56 h-56 bg-indigo-600/15 blur-[60px] rounded-full pointer-events-none" />
 
@@ -37,60 +43,60 @@ export default function PhoneMockup() {
             Barcha ijtimoiy tarmoqlar, aloqa raqamlari va xarita lokatsiyalari bitta professional sahifada.
           </p>
 
-
-          {/* 5 Vibrant Gradient Buttons */}
+          {/* 5 Vibrant 3D Glassmorphic Action Buttons Matching Reference Image */}
           <div className="w-full space-y-2.5 mt-4">
             {/* 1. Telegram */}
-            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#179cde] via-[#24A1DE] to-[#36b2f0] p-2 flex items-center justify-between shadow-md border border-white/15 cursor-pointer hover:scale-[1.02] transition-transform">
-              <div className="w-9 h-9 rounded-[12px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 border border-white/25">
-                <TelegramIcon className="w-4 h-4" />
+            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#0052d4] via-[#0072ff] to-[#0039a6] border border-[#00d2ff]/40 p-2 flex items-center justify-between shadow-md cursor-pointer hover:scale-[1.02] transition-transform before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/15 before:to-transparent">
+              <div className="w-9 h-9 flex items-center justify-center shrink-0 relative z-10">
+                <TelegramPlaneIcon className="w-8 h-8" />
               </div>
-              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2">
-                Telegram Kanal
+              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2 relative z-10">
+                Telegram
               </span>
               <div className="w-9 shrink-0" />
             </div>
 
             {/* 2. Instagram */}
-            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#F05A4F] via-[#D82E7E] to-[#8D2B9F] p-2 flex items-center justify-between shadow-md border border-white/15 cursor-pointer hover:scale-[1.02] transition-transform">
-              <div className="w-9 h-9 rounded-[12px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 border border-white/25">
-                <InstagramIcon className="w-4 h-4" />
+            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#700060] via-[#b80058] to-[#e63946] border border-[#ff2a8d]/40 p-2 flex items-center justify-between shadow-md cursor-pointer hover:scale-[1.02] transition-transform before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/15 before:to-transparent">
+              <div className="w-9 h-9 flex items-center justify-center shrink-0 relative z-10">
+                <InstagramGradientIcon className="w-7 h-7" />
               </div>
-              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2">
+              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2 relative z-10">
                 Instagram
               </span>
               <div className="w-9 shrink-0" />
             </div>
 
             {/* 3. Telefon */}
-            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#20C063] via-[#2ECC71] to-[#27AE60] p-2 flex items-center justify-between shadow-md border border-white/15 cursor-pointer hover:scale-[1.02] transition-transform">
-              <div className="w-9 h-9 rounded-[12px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 border border-white/25">
-                <Phone className="w-4 h-4 fill-white" />
+            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#0b4629] via-[#147a46] to-[#052b17] border border-[#20c997]/50 p-2 flex items-center justify-between shadow-md cursor-pointer hover:scale-[1.02] transition-transform before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/15 before:to-transparent">
+              <div className="w-9 h-9 flex items-center justify-center shrink-0 relative z-10">
+                <PhoneBadgeIcon className="w-7 h-7" />
               </div>
-              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2">
-                Admin Telefon raqami
+              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2 relative z-10">
+                Telefon
               </span>
               <div className="w-9 shrink-0" />
             </div>
 
             {/* 4. Yandex Maps */}
-            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#FF5722] via-[#FF7043] to-[#FFA726] p-2 flex items-center justify-between shadow-md border border-white/15 cursor-pointer hover:scale-[1.02] transition-transform">
-              <div className="w-9 h-9 rounded-[12px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 border border-white/25">
-                <YandexMapsIcon className="w-4 h-4" />
+            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#FFFFFF] via-[#F4F5F7] to-[#E5E7EB] border border-white/90 p-2 flex items-center justify-between shadow-md cursor-pointer hover:scale-[1.02] transition-transform before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/20 before:to-transparent">
+              <div className="w-9 h-9 flex items-center justify-center shrink-0 relative z-10">
+                <YandexPinIcon className="w-7 h-7" />
               </div>
-              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2">
-                Yandex map Location
+              <span className="text-xs font-bold tracking-wide drop-shadow-sm truncate px-2 relative z-10">
+                <span className="text-[#E61414] font-black">Y</span>
+                <span className="text-[#18181B] font-bold">andex Maps</span>
               </span>
               <div className="w-9 shrink-0" />
             </div>
 
-            {/* 5. Google Maps */}
-            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#2196F3] via-[#00B0FF] to-[#00E676] p-2 flex items-center justify-between shadow-md border border-white/15 cursor-pointer hover:scale-[1.02] transition-transform">
-              <div className="w-9 h-9 rounded-[12px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 border border-white/25">
-                <MapPin className="w-4 h-4" />
+            {/* 5. Joylashuv (Google Maps) */}
+            <div className="group relative w-full overflow-hidden rounded-[18px] bg-gradient-to-r from-[#2a130c] via-[#4d2212] to-[#1d0b05] border border-[#ff6d00]/40 p-2 flex items-center justify-between shadow-md cursor-pointer hover:scale-[1.02] transition-transform before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/15 before:to-transparent">
+              <div className="w-9 h-9 flex items-center justify-center shrink-0 relative z-10">
+                <GoogleMapsPinIcon className="w-7 h-7" />
               </div>
-              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2">
-                Google map Location
+              <span className="text-xs font-bold text-white tracking-wide drop-shadow-sm truncate px-2 relative z-10">
+                Joylashuv
               </span>
               <div className="w-9 shrink-0" />
             </div>
