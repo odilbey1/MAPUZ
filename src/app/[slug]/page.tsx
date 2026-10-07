@@ -23,7 +23,7 @@ export default async function PublicBusinessPage({ params }: PublicPageProps) {
         </div>
         <h1 className="text-2xl font-bold text-white mb-2">Profil topilmadi</h1>
         <p className="text-sm text-[#A1A1AA] max-w-sm mb-6">
-          Siz qidirgan "<strong>{resolvedParams.slug}</strong>" nomli biznes sahifasi mavjud emas yoki o'chirilgan.
+          Siz qidirgan "<strong translate="no" className="notranslate">{resolvedParams.slug}</strong>" nomli biznes sahifasi mavjud emas yoki o'chirilgan.
         </p>
         <Link
           href="/"

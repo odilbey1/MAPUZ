@@ -200,10 +200,10 @@ export default function DashboardPage() {
                         className="w-14 h-14 rounded-[16px] object-cover border border-white/10 group-hover:border-[#B7FF00]/50 transition-colors"
                       />
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-lg font-bold text-white truncate">
+                        <h3 translate="no" className="notranslate text-lg font-bold text-white truncate">
                           {b.business_name}
                         </h3>
-                        <span className="inline-block mt-0.5 text-xs text-[#B7FF00] bg-[#B7FF00]/10 px-2.5 py-0.5 rounded-full font-mono">
+                        <span translate="no" className="notranslate inline-block mt-0.5 text-xs text-[#B7FF00] bg-[#B7FF00]/10 px-2.5 py-0.5 rounded-full font-mono">
                           /{b.slug}
                         </span>
                       </div>

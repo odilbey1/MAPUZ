@@ -34,7 +34,7 @@ export default function PhoneMockup() {
           </div>
 
           {/* Business Name */}
-          <h3 className="text-lg font-black text-white tracking-tight">
+          <h3 translate="no" className="notranslate text-lg font-black text-white tracking-tight">
             MAPUZ Demo Studio
           </h3>
 

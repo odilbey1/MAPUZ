@@ -179,7 +179,7 @@ export default function EditBusinessPage({ params }: EditPageProps) {
             <div className="bg-[#151515] p-6 sm:p-10 rounded-[22px] border border-white/10 shadow-2xl space-y-8">
               <div>
                 <h2 className="text-2xl font-extrabold text-white tracking-tight">
-                  Tahrirlash: {businessName}
+                  Tahrirlash: <span translate="no" className="notranslate">{businessName}</span>
                 </h2>
                 <p className="text-xs text-[#A1A1AA] mt-1">
                   O'zgarishlarni kiriting va "Yangilash" tugmasini bosing. Tugmalar sonini oshirish yoki kamaytirish (o'chirish) imkoniyati mavjud.
@@ -204,10 +204,11 @@ export default function EditBusinessPage({ params }: EditPageProps) {
                     </div>
                     <input
                       type="text"
+                      translate="no"
                       value={businessName}
                       onChange={handleNameChange}
                       required
-                      className="w-full bg-[#0A0A0A] border border-white/10 focus:border-[#B7FF00] focus:ring-1 focus:ring-[#B7FF00] rounded-[16px] pl-11 pr-4 py-3.5 text-white text-sm outline-none transition-all"
+                      className="notranslate w-full bg-[#0A0A0A] border border-white/10 focus:border-[#B7FF00] focus:ring-1 focus:ring-[#B7FF00] rounded-[16px] pl-11 pr-4 py-3.5 text-white text-sm outline-none transition-all"
                     />
                   </div>
                 </div>

@@ -162,11 +162,12 @@ export default function NewBusinessPage() {
                   </div>
                   <input
                     type="text"
+                    translate="no"
                     value={businessName}
                     onChange={handleNameChange}
                     placeholder="Masalan: Suzangaron Fayz"
                     required
-                    className="w-full bg-[#0A0A0A] border border-white/10 focus:border-[#B7FF00] focus:ring-1 focus:ring-[#B7FF00] rounded-[16px] pl-11 pr-4 py-3.5 text-white text-sm placeholder-[#A1A1AA]/50 outline-none transition-all"
+                    className="notranslate w-full bg-[#0A0A0A] border border-white/10 focus:border-[#B7FF00] focus:ring-1 focus:ring-[#B7FF00] rounded-[16px] pl-11 pr-4 py-3.5 text-white text-sm placeholder-[#A1A1AA]/50 outline-none transition-all"
                   />
                 </div>
                 {slug && (

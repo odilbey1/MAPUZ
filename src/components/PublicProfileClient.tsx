@@ -247,7 +247,8 @@ export default function PublicProfileClient({
 
         {/* Business Name */}
         <h1
-          className={`text-2xl sm:text-[26px] font-black tracking-tight leading-snug ${
+          translate="no"
+          className={`notranslate text-2xl sm:text-[26px] font-black tracking-tight leading-snug ${
             isDark ? 'text-white' : 'text-[#111218]'
           }`}
         >
